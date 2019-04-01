@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>7.3</LangVersion>
+    <Configurations>Debug;Release;Test-Debug;Test-Server</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.8" />
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.7.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorSignalR.Shared\BlazorSignalR.Shared.csproj" />
+  </ItemGroup>
+  <Target Name="PreBuild" AfterTargets="PostBuildEvent">
+    <Exec Condition="'$(Configuration)|$(Platform)'=='Test-ServerSide|AnyCPU'" Command="copy &quot;$(ProjectDir)wwwroot\index-server.html&quot; &quot;$(ProjectDir)wwwroot\index.html&quot; /y" />
+    <Exec Condition="'$(Configuration)|$(Platform)'=='Test-Debug|AnyCPU'" Command="copy &quot;$(ProjectDir)wwwroot\index-browser.html&quot; &quot;$(ProjectDir)wwwroot\index.html&quot; /y" />
+  </Target>
+</Project>

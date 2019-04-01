@@ -1,0 +1,14 @@
+﻿@page "/"
+@inherits HomeBase
+<div>
+    <form>
+        <input type="text" bind="@this.message.Id" />
+        <input type="text" bind="@this.message.Payload" />
+    </form>
+    <div class="row">
+        <div class="col">
+            <input type="button" value="@GetBtnName" onclick="@ManageConnectionAsync" />
+            <input type="button" value="Send" onclick="@SendMessageAsync" />
+        </div>
+    </div>
+</div>
