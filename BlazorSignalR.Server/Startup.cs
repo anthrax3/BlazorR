@@ -16,14 +16,16 @@ namespace BlazorSignalR.Server {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
             services.AddSignalR();
+            services.AddSingleton<ProducerService>();
 
 #if RUNATSERVER
-            services.AddServerSideBlazor<Client.Startup>();
+            
             Client.Startup.ConfigureServicesForDebug = x => {
                 x.AddSingleton(new HttpClient() {
                     BaseAddress = new Uri(@"http://localhost:8500/")
                 });
             };
+            services.AddServerSideBlazor<Client.Startup>();
 #endif
             services.AddResponseCompression(options => {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
@@ -32,22 +34,27 @@ namespace BlazorSignalR.Server {
                     WasmMediaTypeNames.Application.Wasm,
                 });
             });
+
+            var provider=services.BuildServiceProvider();
+            var prov=provider.GetRequiredService<ProducerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             app.UseResponseCompression();
             app.UseDeveloperExceptionPage();
-            app.UseSignalR(x => x.MapHub<MessageHub>("/message"));
+            
 
             app.UseMvc(routes => {
                 routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
             });
+            app.UseSignalR(x => x.MapHub<MessageHub>("/message"));
 #if RUNATSERVER
-           app.UseServerSideBlazor<Client.Startup>();
+            app.UseServerSideBlazor<Client.Startup>();
 #else
             app.UseBlazor<Client.Startup>();
 #endif
+
 
         }
     }

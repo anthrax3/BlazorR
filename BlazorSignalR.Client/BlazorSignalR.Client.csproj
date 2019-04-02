@@ -7,6 +7,10 @@
     <Configurations>Debug;Release;Test-Debug;Test-Server</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test-Server|AnyCPU'">
+    <DefineConstants>TRACE;RUNATSERVER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.8" />
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.0" />
@@ -19,7 +23,7 @@
     <ProjectReference Include="..\BlazorSignalR.Shared\BlazorSignalR.Shared.csproj" />
   </ItemGroup>
   <Target Name="PreBuild" AfterTargets="PostBuildEvent">
-    <Exec Condition="'$(Configuration)|$(Platform)'=='Test-ServerSide|AnyCPU'" Command="copy &quot;$(ProjectDir)wwwroot\index-server.html&quot; &quot;$(ProjectDir)wwwroot\index.html&quot; /y" />
+    <Exec Condition="'$(Configuration)|$(Platform)'=='Test-Server|AnyCPU'" Command="copy &quot;$(ProjectDir)wwwroot\index-server.html&quot; &quot;$(ProjectDir)wwwroot\index.html&quot; /y" />
     <Exec Condition="'$(Configuration)|$(Platform)'=='Test-Debug|AnyCPU'" Command="copy &quot;$(ProjectDir)wwwroot\index-browser.html&quot; &quot;$(ProjectDir)wwwroot\index.html&quot; /y" />
   </Target>
 </Project>

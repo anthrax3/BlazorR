@@ -1,14 +1,23 @@
 ﻿@page "/"
 @inherits HomeBase
 <div>
+    HEEEEEELO !
     <form>
-        <input type="text" bind="@this.message.Id" />
-        <input type="text" bind="@this.message.Payload" />
+        <div class="row form-group">
+            <label>Id</label>
+            <input type="text" bind="@this.message.Id" value="Adrian"/>
+        </div>
+        <div class="row form-group">
+            <label>Payload</label>
+            <input type="text" bind="@this.message.Payload" value="Hi" />
+        </div>
+
     </form>
     <div class="row">
         <div class="col">
-            <input type="button" value="@GetBtnName" onclick="@ManageConnectionAsync" />
+            <input type="button" value="@GetBtnName" onclick="@ManageConnectionAsync"  />
             <input type="button" value="Send" onclick="@SendMessageAsync" />
+            <input type="button" value="Ping" onclick="@PingSelfAsync"/>
         </div>
     </div>
 </div>
